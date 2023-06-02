@@ -3,11 +3,11 @@
   <title>Lemur‘blog</title>
   
   <subtitle>Lemur的个人博客</subtitle>
-  <link href="http://lemur9.github.io/atom.xml" rel="self"/>
+  <link href="http://lemur9.top/atom.xml" rel="self"/>
   
-  <link href="http://lemur9.github.io/"/>
-  <updated>2023-06-01T10:33:07.385Z</updated>
-  <id>http://lemur9.github.io/</id>
+  <link href="http://lemur9.top/"/>
+  <updated>2023-06-02T16:28:27.499Z</updated>
+  <id>http://lemur9.top/</id>
   
   <author>
     <name>Lemur</name>
@@ -17,9 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>OSS对象存储的使用</title>
+    <link href="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
+    <published>2023-06-02T09:06:56.000Z</published>
+    <updated>2023-06-02T16:28:27.499Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="OSS对象存储"><a href="#OSS对象存储" class="headerlink" title="OSS对象存储"></a>OSS对象存储</h1><ul><li>适用于分布式系统</li></ul><h2 id="一、准备工作：开启阿里云的对象存储功能"><a href="#一、准备工作：开启阿里云的对象存储功能" class="headerlink" title="一、准备工作：开启阿里云的对象存储功能"></a>一、准备工作：开启阿里云的对象存储功能</h2><h3 id="1-创建阿里云账号，开启-对象存储OSS-功能"><a href="#1-创建阿里云账号，开启-对象存储OSS-功能" class="headerlink" title="1. 创建阿里云账号，开启 对象存储OSS 功能"></a>1. 创建阿里云账号，开启 <em>对象存储OSS</em> 功能</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_2.png" alt="开启对象存储OSS功能"></p><h3 id="2-创建一个Bucket，读写权限选择-公共读-即可"><a href="#2-创建一个Bucket，读写权限选择-公共读-即可" class="headerlink" title="2. 创建一个Bucket，读写权限选择 公共读 即可"></a>2. 创建一个Bucket，读写权限选择 <em>公共读</em> 即可</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_1.png" alt="创建Bucket"></p><h3 id="3-进入创建好的Bucket，可以选择上传文件进行测试"><a href="#3-进入创建好的Bucket，可以选择上传文件进行测试" class="headerlink" title="3. 进入创建好的Bucket，可以选择上传文件进行测试"></a>3. 进入创建好的Bucket，可以选择上传文件进行测试</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img.png" alt="测试上传文件"><br>访问详情中的url即可在线预览</p><h3 id="4-创建子用户，获取AccessKey"><a href="#4-创建子用户，获取AccessKey" class="headerlink" title="4. 创建子用户，获取AccessKey"></a>4. 创建子用户，获取AccessKey</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_4.png" alt="img_4.png"><br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_5.png" alt="img_5.png"><br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_6.png" alt="img_6.png"><br>记录下AccessKey ID 和 AccessKey Secret</p><h2 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h2><h3 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1. 创建项目"></a>1. 创建项目</h3><p>注：这里选错了使用的Gradle，熟悉Maven可以自行使用Maven构建。<br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_3.png" alt="创建一个SpringBoot项目"></p><h3 id="2-编写资源文件"><a href="#2-编写资源文件" class="headerlink" title="2. 编写资源文件"></a>2. 编写资源文件</h3><p>accessKey对应AccessKey ID <br>secretKey对应AccessKey Secret <br>endpoint对应Bucket概览页中的访问端口的地域节点<br>bucket为对应的bucket<br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_7.png" alt="资源文件"></p><h3 id="3-简单上传代码实现"><a href="#3-简单上传代码实现" class="headerlink" title="3. 简单上传代码实现"></a>3. 简单上传代码实现</h3><h4 id="OssController"><a href="#OssController" class="headerlink" title="OssController"></a>OssController</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@ConfigurationProperties(&quot;alibaba.cloud&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OssController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String accessKey;<br><br>    <span class="hljs-keyword">private</span> String secretKey;<br><br>    <span class="hljs-keyword">private</span> Oss oss;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Oss</span> &#123;<br>        <span class="hljs-keyword">private</span> String endpoint;<br><br>        <span class="hljs-keyword">private</span> String bucket;<br>    &#125;<br><br><br>    <span class="hljs-meta">@Resource</span><br>    OSS ossClient;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;oss/test&quot;)</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testOss</span><span class="hljs-params">()</span> &#123;<br><br>        <span class="hljs-comment">// 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">objectName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;IMG_2184(20200719-184751).JPG&quot;</span>;<br><br>        String filePath= <span class="hljs-string">&quot;IMG_2184(20200719-184751).JPG&quot;</span>;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> ClassLoader.getSystemResourceAsStream(filePath);<br>            <span class="hljs-comment">// 创建PutObjectRequest对象。</span><br>            <span class="hljs-type">PutObjectRequest</span> <span class="hljs-variable">putObjectRequest</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PutObjectRequest</span>(oss.bucket, objectName, inputStream);<br>            <span class="hljs-comment">// 创建PutObject请求。</span><br>            ossClient.putObject(putObjectRequest);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);<br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure><h4 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@ConfigurationPropertiesScan</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OssFileUploadApplication</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(OssFileUploadApplication.class, args);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure><h4 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h4><p><a href="http://localhost:30000/oss/test">http://localhost:30000/oss/test</a> \</p><h3 id="4-查看"><a href="#4-查看" class="headerlink" title="4. 查看"></a>4. 查看</h3><h4 id="点击对应图片的详情按钮，对应URL也可直接访问"><a href="#点击对应图片的详情按钮，对应URL也可直接访问" class="headerlink" title="点击对应图片的详情按钮，对应URL也可直接访问"></a>点击对应图片的详情按钮，对应URL也可直接访问</h4><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_10.png" alt="img_10.png"></p><h2 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h2><p>文件目录 <br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_9.png" alt="文件目录"> <br>贴上测试图片 <br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_8.png" alt="测试图片"></p><h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>此处只做简单测试，具体使用详情可见阿里云官方文档：<a href="https://help.aliyun.com/document_detail/84781.html">https://help.aliyun.com/document_detail/84781.html</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;OSS对象存储&quot;&gt;&lt;a href=&quot;#OSS对象存储&quot; class=&quot;headerlink&quot; title=&quot;OSS对象存储&quot;&gt;&lt;/a&gt;OSS对象存储&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;适用于分布式系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;一、准备工作：开启阿里云的对象存</summary>
+      
+    
+    
+    
+    <category term="java组件" scheme="http://lemur9.top/categories/java%E7%BB%84%E4%BB%B6/"/>
+    
+    
+    <category term="OSS对象存储" scheme="http://lemur9.top/tags/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/"/>
+    
+  </entry>
+  
+  <entry>
     <title>小记</title>
-    <link href="http://lemur9.github.io/2023/06/01/%E5%B0%8F%E8%AE%B0/"/>
-    <id>http://lemur9.github.io/2023/06/01/%E5%B0%8F%E8%AE%B0/</id>
+    <link href="http://lemur9.top/2023/06/01/%E5%B0%8F%E8%AE%B0/"/>
+    <id>http://lemur9.top/2023/06/01/%E5%B0%8F%E8%AE%B0/</id>
     <published>2023-06-01T10:20:42.000Z</published>
     <updated>2023-06-01T10:33:07.385Z</updated>
     
