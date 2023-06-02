@@ -834,8 +834,8 @@ i.iconfont {
 }
 :root {
   --color-mode: "light";
-  --body-bg-color: #eee;
-  --board-bg-color: #fff;
+  --body-bg-color: #ccf9f5;
+  --board-bg-color: #cacedf;
   --text-color: #3c4858;
   --sec-text-color: #718096;
   --post-text-color: #2c3e50;
