@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>缓存问题思考逻辑</title>
+    <link href="/2023/08/10/%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83%E9%80%BB%E8%BE%91/"/>
+    <url>/2023/08/10/%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83%E9%80%BB%E8%BE%91/</url>
+    
+    <content type="html"><![CDATA[<h1 id="缓存问题思考逻辑"><a href="#缓存问题思考逻辑" class="headerlink" title="缓存问题思考逻辑"></a>缓存问题思考逻辑</h1><h2 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h2><p>涉及组件：Redis、Redisson、SpringCache</p><h2 id="一、缓存问题"><a href="#一、缓存问题" class="headerlink" title="一、缓存问题"></a>一、缓存问题</h2><ol><li>需要缓存<ul><li>解决方案：加本地缓存</li><li>存在问题：分布式系统无法使用</li></ul></li><li>使用缓存中间件<ul><li>解决方案：使用redis</li><li>存在问题：读模式下存在缓存穿透、雪崩、击穿问题</li></ul></li><li>解决读模式下的问题<ul><li>解决方案：<code>穿透</code>-&gt;缓存null值，<code>雪崩</code>-&gt;添加随机ttl，击穿-&gt;加本地锁</li><li>存在问题：分布式系统中本地锁无法完全锁住</li></ul></li><li>使用分布式锁<ul><li>解决方案：使用redisson</li><li>存在问题：降低效率</li></ul></li></ol><p>&#x3D;&#x3D;———————————————————————-&#x3D;&#x3D;</p><h2 id="二、缓存一致性问题"><a href="#二、缓存一致性问题" class="headerlink" title="二、缓存一致性问题"></a>二、缓存一致性问题</h2><ol><li>数据库和缓存数据需要保证一致<ul><li>解决方案：双写模式、失效模式+随机ttl</li><li>存在问题：可能出现脏读现象</li></ul></li><li>使用读写锁<ul><li>解决方案：使用RReadWriteLock，使用Canal感知数据库更新</li><li>存在问题：写锁阻塞读取操作</li></ul></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>java组件</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>redis缓存</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>OSS对象存储的使用</title>
     <link href="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <url>/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/</url>

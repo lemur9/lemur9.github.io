@@ -16,34 +16,22 @@
   <meta name="author" content="Lemur">
   <meta name="keywords" content="">
   
-    <meta name="description" content="OSS对象存储 适用于分布式系统  一、准备工作：开启阿里云的对象存储功能1. 创建阿里云账号，开启 对象存储OSS 功能 2. 创建一个Bucket，读写权限选择 公共读 即可 3. 进入创建好的Bucket，可以选择上传文件进行测试访问详情中的url即可在线预览 4. 创建子用户，获取AccessKey记录下AccessKey ID 和 AccessKey Secret 二、代码实现1. 创建">
+    <meta name="description" content="缓存问题思考逻辑工具介绍涉及组件：Redis、Redisson、SpringCache 一、缓存问题 需要缓存 解决方案：加本地缓存 存在问题：分布式系统无法使用   使用缓存中间件 解决方案：使用redis 存在问题：读模式下存在缓存穿透、雪崩、击穿问题   解决读模式下的问题 解决方案：穿透-&gt;缓存null值，雪崩-&gt;添加随机ttl，击穿-&gt;加本地锁 存在问题：分布式系统中本">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSS对象存储的使用">
-<meta property="og:url" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:title" content="缓存问题思考逻辑">
+<meta property="og:url" content="http://lemur9.top/2023/08/10/%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83%E9%80%BB%E8%BE%91/index.html">
 <meta property="og:site_name" content="Lemur‘s blog">
-<meta property="og:description" content="OSS对象存储 适用于分布式系统  一、准备工作：开启阿里云的对象存储功能1. 创建阿里云账号，开启 对象存储OSS 功能 2. 创建一个Bucket，读写权限选择 公共读 即可 3. 进入创建好的Bucket，可以选择上传文件进行测试访问详情中的url即可在线预览 4. 创建子用户，获取AccessKey记录下AccessKey ID 和 AccessKey Secret 二、代码实现1. 创建">
+<meta property="og:description" content="缓存问题思考逻辑工具介绍涉及组件：Redis、Redisson、SpringCache 一、缓存问题 需要缓存 解决方案：加本地缓存 存在问题：分布式系统无法使用   使用缓存中间件 解决方案：使用redis 存在问题：读模式下存在缓存穿透、雪崩、击穿问题   解决读模式下的问题 解决方案：穿透-&gt;缓存null值，雪崩-&gt;添加随机ttl，击穿-&gt;加本地锁 存在问题：分布式系统中本">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_2.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_1.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_4.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_5.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_6.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_3.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_7.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_10.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_9.png">
-<meta property="og:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_8.png">
-<meta property="article:published_time" content="2023-06-02T09:06:56.000Z">
-<meta property="article:modified_time" content="2023-06-02T16:28:27.499Z">
+<meta property="article:published_time" content="2023-08-10T07:50:28.000Z">
+<meta property="article:modified_time" content="2023-08-10T07:52:50.427Z">
 <meta property="article:author" content="Lemur">
-<meta property="article:tag" content="OSS对象存储">
+<meta property="article:tag" content="redis缓存">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://lemur9.top/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_2.png">
   
   
   
-  <title>OSS对象存储的使用 - Lemur‘s blog</title>
+  <title>缓存问题思考逻辑 - Lemur‘s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -227,7 +215,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="OSS对象存储的使用"></span>
+            <span id="subtitle" data-typed-text="缓存问题思考逻辑"></span>
           
         </div>
 
@@ -238,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-02 17:06" pubdate>
-          2023年6月2日 下午
+        <time datetime="2023-08-10 15:50" pubdate>
+          2023年8月10日 下午
         </time>
       </span>
     
@@ -250,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          382 字
         
       </span>
     
@@ -261,7 +249,7 @@
         
         
         
-          14 分钟
+          4 分钟
         
       </span>
     
@@ -307,26 +295,47 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">OSS对象存储的使用</h1>
+            <h1 style="display: none">缓存问题思考逻辑</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="OSS对象存储"><a href="#OSS对象存储" class="headerlink" title="OSS对象存储"></a>OSS对象存储</h1><ul>
-<li>适用于分布式系统</li>
+                <h1 id="缓存问题思考逻辑"><a href="#缓存问题思考逻辑" class="headerlink" title="缓存问题思考逻辑"></a>缓存问题思考逻辑</h1><h2 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h2><p>涉及组件：Redis、Redisson、SpringCache</p>
+<h2 id="一、缓存问题"><a href="#一、缓存问题" class="headerlink" title="一、缓存问题"></a>一、缓存问题</h2><ol>
+<li>需要缓存<ul>
+<li>解决方案：加本地缓存</li>
+<li>存在问题：分布式系统无法使用</li>
 </ul>
-<h2 id="一、准备工作：开启阿里云的对象存储功能"><a href="#一、准备工作：开启阿里云的对象存储功能" class="headerlink" title="一、准备工作：开启阿里云的对象存储功能"></a>一、准备工作：开启阿里云的对象存储功能</h2><h3 id="1-创建阿里云账号，开启-对象存储OSS-功能"><a href="#1-创建阿里云账号，开启-对象存储OSS-功能" class="headerlink" title="1. 创建阿里云账号，开启 对象存储OSS 功能"></a>1. 创建阿里云账号，开启 <em>对象存储OSS</em> 功能</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_2.png" srcset="/img/loading.gif" lazyload alt="开启对象存储OSS功能"></p>
-<h3 id="2-创建一个Bucket，读写权限选择-公共读-即可"><a href="#2-创建一个Bucket，读写权限选择-公共读-即可" class="headerlink" title="2. 创建一个Bucket，读写权限选择 公共读 即可"></a>2. 创建一个Bucket，读写权限选择 <em>公共读</em> 即可</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_1.png" srcset="/img/loading.gif" lazyload alt="创建Bucket"></p>
-<h3 id="3-进入创建好的Bucket，可以选择上传文件进行测试"><a href="#3-进入创建好的Bucket，可以选择上传文件进行测试" class="headerlink" title="3. 进入创建好的Bucket，可以选择上传文件进行测试"></a>3. 进入创建好的Bucket，可以选择上传文件进行测试</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img.png" srcset="/img/loading.gif" lazyload alt="测试上传文件"><br>访问详情中的url即可在线预览</p>
-<h3 id="4-创建子用户，获取AccessKey"><a href="#4-创建子用户，获取AccessKey" class="headerlink" title="4. 创建子用户，获取AccessKey"></a>4. 创建子用户，获取AccessKey</h3><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_4.png" srcset="/img/loading.gif" lazyload alt="img_4.png"><br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_5.png" srcset="/img/loading.gif" lazyload alt="img_5.png"><br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_6.png" srcset="/img/loading.gif" lazyload alt="img_6.png"><br>记录下AccessKey ID 和 AccessKey Secret</p>
-<h2 id="二、代码实现"><a href="#二、代码实现" class="headerlink" title="二、代码实现"></a>二、代码实现</h2><h3 id="1-创建项目"><a href="#1-创建项目" class="headerlink" title="1. 创建项目"></a>1. 创建项目</h3><p>注：这里选错了使用的Gradle，熟悉Maven可以自行使用Maven构建。<br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_3.png" srcset="/img/loading.gif" lazyload alt="创建一个SpringBoot项目"></p>
-<h3 id="2-编写资源文件"><a href="#2-编写资源文件" class="headerlink" title="2. 编写资源文件"></a>2. 编写资源文件</h3><p>accessKey对应AccessKey ID <br>secretKey对应AccessKey Secret <br>endpoint对应Bucket概览页中的访问端口的地域节点<br>bucket为对应的bucket<br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_7.png" srcset="/img/loading.gif" lazyload alt="资源文件"></p>
-<h3 id="3-简单上传代码实现"><a href="#3-简单上传代码实现" class="headerlink" title="3. 简单上传代码实现"></a>3. 简单上传代码实现</h3><h4 id="OssController"><a href="#OssController" class="headerlink" title="OssController"></a>OssController</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@ConfigurationProperties(&quot;alibaba.cloud&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OssController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> String accessKey;<br><br>    <span class="hljs-keyword">private</span> String secretKey;<br><br>    <span class="hljs-keyword">private</span> Oss oss;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Oss</span> &#123;<br>        <span class="hljs-keyword">private</span> String endpoint;<br><br>        <span class="hljs-keyword">private</span> String bucket;<br>    &#125;<br><br><br>    <span class="hljs-meta">@Resource</span><br>    OSS ossClient;<br><br>    <span class="hljs-meta">@RequestMapping(&quot;oss/test&quot;)</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testOss</span><span class="hljs-params">()</span> &#123;<br><br>        <span class="hljs-comment">// 填写Object完整路径，完整路径中不能包含Bucket名称，例如exampledir/exampleobject.txt。</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">objectName</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;IMG_2184(20200719-184751).JPG&quot;</span>;<br><br>        String filePath= <span class="hljs-string">&quot;IMG_2184(20200719-184751).JPG&quot;</span>;<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> ClassLoader.getSystemResourceAsStream(filePath);<br>            <span class="hljs-comment">// 创建PutObjectRequest对象。</span><br>            <span class="hljs-type">PutObjectRequest</span> <span class="hljs-variable">putObjectRequest</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PutObjectRequest</span>(oss.bucket, objectName, inputStream);<br>            <span class="hljs-comment">// 创建PutObject请求。</span><br>            ossClient.putObject(putObjectRequest);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);<br>        &#125;<br><br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h4 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@ConfigurationPropertiesScan</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OssFileUploadApplication</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(OssFileUploadApplication.class, args);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h4 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问"></a>浏览器访问</h4><p><a target="_blank" rel="noopener" href="http://localhost:30000/oss/test">http://localhost:30000/oss/test</a> \</p>
-<h3 id="4-查看"><a href="#4-查看" class="headerlink" title="4. 查看"></a>4. 查看</h3><h4 id="点击对应图片的详情按钮，对应URL也可直接访问"><a href="#点击对应图片的详情按钮，对应URL也可直接访问" class="headerlink" title="点击对应图片的详情按钮，对应URL也可直接访问"></a>点击对应图片的详情按钮，对应URL也可直接访问</h4><p><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_10.png" srcset="/img/loading.gif" lazyload alt="img_10.png"></p>
-<h2 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h2><p>文件目录 <br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_9.png" srcset="/img/loading.gif" lazyload alt="文件目录"> <br>贴上测试图片 <br><img src="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/img_8.png" srcset="/img/loading.gif" lazyload alt="测试图片"></p>
-<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>此处只做简单测试，具体使用详情可见阿里云官方文档：<a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/84781.html">https://help.aliyun.com/document_detail/84781.html</a></p>
+</li>
+<li>使用缓存中间件<ul>
+<li>解决方案：使用redis</li>
+<li>存在问题：读模式下存在缓存穿透、雪崩、击穿问题</li>
+</ul>
+</li>
+<li>解决读模式下的问题<ul>
+<li>解决方案：<code>穿透</code>-&gt;缓存null值，<code>雪崩</code>-&gt;添加随机ttl，击穿-&gt;加本地锁</li>
+<li>存在问题：分布式系统中本地锁无法完全锁住</li>
+</ul>
+</li>
+<li>使用分布式锁<ul>
+<li>解决方案：使用redisson</li>
+<li>存在问题：降低效率</li>
+</ul>
+</li>
+</ol>
+<p>&#x3D;&#x3D;———————————————————————-&#x3D;&#x3D;</p>
+<h2 id="二、缓存一致性问题"><a href="#二、缓存一致性问题" class="headerlink" title="二、缓存一致性问题"></a>二、缓存一致性问题</h2><ol>
+<li>数据库和缓存数据需要保证一致<ul>
+<li>解决方案：双写模式、失效模式+随机ttl</li>
+<li>存在问题：可能出现脏读现象</li>
+</ul>
+</li>
+<li>使用读写锁<ul>
+<li>解决方案：使用RReadWriteLock，使用Canal感知数据库更新</li>
+<li>存在问题：写锁阻塞读取操作</li>
+</ul>
+</li>
+</ol>
 
                 
               </div>
@@ -360,7 +369,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/">#OSS对象存储</a>
+        <a href="/tags/redis%E7%BC%93%E5%AD%98/">#redis缓存</a>
       
     </div>
   
@@ -372,8 +381,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>OSS对象存储的使用</div>
-      <div>http://lemur9.top/2023/06/02/OSS对象存储的使用/</div>
+      <div>缓存问题思考逻辑</div>
+      <div>http://lemur9.top/2023/08/10/缓存问题思考逻辑/</div>
     </div>
     <div class="license-meta">
       
@@ -385,7 +394,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月2日</div>
+          <div>2023年8月10日</div>
         </div>
       
       
@@ -410,18 +419,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/08/10/%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83%E9%80%BB%E8%BE%91/" title="缓存问题思考逻辑">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">缓存问题思考逻辑</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/01/%E5%B0%8F%E8%AE%B0/" title="小记">
-                        <span class="hidden-mobile">小记</span>
+                      <a href="/2023/06/02/OSS%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%9A%84%E4%BD%BF%E7%94%A8/" title="OSS对象存储的使用">
+                        <span class="hidden-mobile">OSS对象存储的使用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
