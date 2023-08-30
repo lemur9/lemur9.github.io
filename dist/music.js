@@ -1,7 +1,7 @@
 const ap = new APlayer({
   container: document.getElementById('aplayer'),
   fixed: true,
-  autoplay: true, //自动播放
+  autoplay: false, //自动播放
   audio: [{
     name: '起风了', //音频名称
     artist: '买辣椒也用券', //音频艺术家
